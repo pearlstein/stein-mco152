@@ -14,7 +14,7 @@ public class MultipleProjectilesGUI extends JFrame {
 
 		setLayout(new BorderLayout());
 
-		add(new GUIComponent(20), BorderLayout.CENTER);
+		add(new GraphComponent(20), BorderLayout.CENTER);
 
 		setVisible(true);
 	}

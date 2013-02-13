@@ -13,7 +13,7 @@ public class ProjectileGUI extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		setLayout(new BorderLayout());
-		add(new GraphComponent(),BorderLayout.CENTER);
+		add(new GraphComponent(1),BorderLayout.CENTER);
 
 		
 		setVisible(true);

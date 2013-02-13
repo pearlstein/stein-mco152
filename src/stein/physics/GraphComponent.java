@@ -1,12 +1,13 @@
 package stein.physics;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
 //make a custom control to draw a projectile
 public class GraphComponent extends JComponent {
-	private Projectile projectile = new Projectile(37, 73);
+	private Projectile projectile = new Projectile(37, 73,Color.BLUE);
 
 	
 	// override paint component of JComponent and in there do the draw calls

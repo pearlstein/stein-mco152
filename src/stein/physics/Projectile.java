@@ -1,14 +1,21 @@
 package stein.physics;
 
+import java.awt.Color;
+
 public class Projectile {
 
 	//private for data encapsulation
 	private double angle;
 	private double velocity;
+	private Color color;
 	
-	public Projectile(double angle, double velocity) {
+	public Projectile(double angle, double velocity,Color color) {
 		this.angle = angle;
 		this.velocity = velocity;
+		this.color=color;
+	}
+	public Color getColor(){
+		return color;
 	}
 	public double getX(double time){
 		return Math.cos(Math.toRadians(angle)) * velocity * time;

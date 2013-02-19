@@ -9,36 +9,46 @@ import javax.swing.JComponent;
 public class GraphComponent extends JComponent {
 
 	private Projectile[] projectilesArray;
-	private double time = 0;
 
 	public GraphComponent(int numCurves) {
 		projectilesArray = new Projectile[numCurves];
 
-		Random randomNum = new Random();
-
-		// set up array of projectiles with increasing angles and velocities and
+		// set up array of projectiles with increasing angles, velocities and
 		// randomColors
 		for (int i = 0; i < numCurves; i++) {
-			projectilesArray[i] = new Projectile(randomNum.nextInt(360),
-					100+randomNum.nextInt(201),
-					new Color(randomNum.nextInt(256),randomNum.nextInt(256), randomNum.nextInt(256)));
+			projectilesArray[i] = new Projectile(getRandomNumber(360),
+					200 + getRandomNumber(301), 
+					new Color(getRandomNumber(256),getRandomNumber(256), getRandomNumber(256)));
 		}
+	}
+
+	private void drawGraph(Graphics g) {
+		for (int i = 0; i < this.getWidth(); i += 15) {
+			g.drawLine(i, 0, i, this.getHeight());
+		}
+		for (int i = 0; i < this.getHeight(); i += 15) {
+			g.drawLine(0, i, this.getWidth(), i);
+		}
+	}
+
+	private int getRandomNumber(int range) {
+		Random randomNumberGenerator = new Random();
+		return randomNumberGenerator.nextInt(range);
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
+		drawGraph(g);
+
 		g.translate(this.getWidth() / 2, this.getHeight() / 2);
-		
-		for(int i=0;i<this.getWidth();i+=5){
-			g.drawLine(i,this.getHeight(),this.getWidth(),0);
-		}
-		time += .001;
-		
 
 		// set starting size of points
 		int size = 10;
+
+		// int prevX = 0;
+		// int prevY = 0;
 
 		for (int j = 0; j < projectilesArray.length; j++) {
 			// increment size of points for each projectile
@@ -46,23 +56,25 @@ public class GraphComponent extends JComponent {
 
 			g.setColor(projectilesArray[j].getColor());
 
-			int prevX = 0;
-			int prevY = 0;
+			projectilesArray[j].tick();
+			int x = (int) projectilesArray[j].getX(projectilesArray[j].getTime());
+			int y = (int) projectilesArray[j].getY(projectilesArray[j].getTime());
 
-			int x = (int) projectilesArray[j].getX(time);
-			int y = (int) projectilesArray[j].getY(time);
+			// continuity and lifespan
+			// if projectile goes off current window, replace it with a new projectile at the origin
+			if (x > (this.getWidth() / 2) || x < -(this.getWidth() / 2)
+					|| y > (this.getHeight() / 2)|| y < -(this.getHeight() / 2)) {
+					 		projectilesArray[j] = new Projectile(getRandomNumber(360),
+					 					200 + getRandomNumber(301), 
+					 						new Color(getRandomNumber(256), getRandomNumber(256),getRandomNumber(256)));
+			}
 
 			g.fillOval(x - (size / 2), -(y + (size / 2)), size, size);
-			//g.fillRect(x-(size/4), -(y+size/4), size, size);
 
 			/*
-			 * if(time>0)
-			 * //g.drawLine(x,-y,(int)projectilesArray[j].getX(i-1),-(
-			 * int)projectilesArray[j].getY(i-1));
-			 * g.drawLine(x,-y,prevX,-prevY);
+			 * if(projectilesArray[j].getTime()>0){
+			 * g.drawLine(x,-y,prevX,-prevY); prevX = x; prevY = y; }
 			 */
-			prevX = x;
-			prevY = y;
 
 			this.repaint();
 

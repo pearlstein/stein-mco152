@@ -10,7 +10,7 @@ public class DictionaryList {
 		words = new String[num];
 		Random random=new Random();
 		for(int i=0;i<num;i++){
-			Character character=new Character((char) (random.nextInt(65)));
+			Character character=new Character((char) (97+random.nextInt(26)));
 			words[i]=character+"";
 		}
 		
@@ -27,7 +27,7 @@ public class DictionaryList {
 	}
 
 	public static void main(String[] args) {
-		DictionaryList list = new DictionaryList(5);
+		DictionaryList list = new DictionaryList(20);
 		list.getList();
 	}
 }

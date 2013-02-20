@@ -9,17 +9,23 @@ import javax.swing.JComponent;
 public class GraphComponent extends JComponent {
 
 	private Projectile[] projectilesArray;
+	private Random randomNumberGenerator;
 
 	public GraphComponent(int numCurves) {
 		projectilesArray = new Projectile[numCurves];
+		randomNumberGenerator=new Random();
 
 		// set up array of projectiles with increasing angles, velocities and
 		// randomColors
 		for (int i = 0; i < numCurves; i++) {
-			projectilesArray[i] = new Projectile(getRandomNumber(360),
-					200 + getRandomNumber(301), 
-					new Color(getRandomNumber(256),getRandomNumber(256), getRandomNumber(256)));
+			projectilesArray[i] = buildRandomProjectile();
 		}
+	}
+
+	private Projectile buildRandomProjectile() {
+		return new Projectile(getRandomNumber(360),
+				200 + getRandomNumber(301), 
+				new Color(getRandomNumber(256),getRandomNumber(256), getRandomNumber(256)));
 	}
 
 	private void drawGraph(Graphics g) {
@@ -32,7 +38,6 @@ public class GraphComponent extends JComponent {
 	}
 
 	private int getRandomNumber(int range) {
-		Random randomNumberGenerator = new Random();
 		return randomNumberGenerator.nextInt(range);
 	}
 
@@ -62,11 +67,8 @@ public class GraphComponent extends JComponent {
 
 			// continuity and lifespan
 			// if projectile goes off current window, replace it with a new projectile at the origin
-			if (x > (this.getWidth() / 2) || x < -(this.getWidth() / 2)
-					|| y > (this.getHeight() / 2)|| y < -(this.getHeight() / 2)) {
-					 		projectilesArray[j] = new Projectile(getRandomNumber(360),
-					 					200 + getRandomNumber(301), 
-					 						new Color(getRandomNumber(256), getRandomNumber(256),getRandomNumber(256)));
+			if (isOffScreen(x, y)) {
+					 		projectilesArray[j] = buildRandomProjectile();
 			}
 
 			g.fillOval(x - (size / 2), -(y + (size / 2)), size, size);
@@ -80,5 +82,10 @@ public class GraphComponent extends JComponent {
 
 		}
 
+	}
+
+	private boolean isOffScreen(int x, int y) {
+		return x > (this.getWidth() / 2) || x < -(this.getWidth() / 2)
+				|| y > (this.getHeight() / 2)|| y < -(this.getHeight() / 2);
 	}
 }

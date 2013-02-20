@@ -3,14 +3,12 @@ package stein.interviews;
 import java.util.Stack;
 
 public class TwoStackQueue {
-	private Stack<String> stackA;
-	private Stack<String> stackB;
 	private Stack<String> enqueueStack;
 	private Stack<String> dequeueStack;
 	
 	public TwoStackQueue(Stack<String> a, Stack<String> b){
-		enqueueStack=stackA=a;
-		dequeueStack=stackB=b;
+		enqueueStack=a;
+		dequeueStack=b;
 	}
 	public void enqueue(String str){
 		while(!dequeueStack.isEmpty()){
@@ -20,13 +18,14 @@ public class TwoStackQueue {
 	}
 	public void dequeue(){
 		while(!enqueueStack.isEmpty()){
-			dequeueStack.push(stackA.pop());
+			dequeueStack.push(enqueueStack.pop());
 		}
-		System.out.println(stackB.pop());
+		System.out.println(dequeueStack.pop());
 		
 		
 	}
-	public static void main(String[] args){
+	public static void 
+	main(String[] args){
 		Stack<String> stackA=new Stack<String>();
 		Stack<String> stackB=new Stack<String>();
 		
@@ -34,9 +33,11 @@ public class TwoStackQueue {
 		
 		x.enqueue("A");
 		x.enqueue("B");
+		x.dequeue();
+		
 		x.enqueue("C");
 		
-		x.dequeue();
+		
 		x.dequeue();
 		
 		x.enqueue("D");

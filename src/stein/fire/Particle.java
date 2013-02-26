@@ -7,28 +7,19 @@ public class Particle {
 	//private for data encapsulation
 	private double angle;
 	private double velocity;
-	private Color color;
 	private double time;
 	private double lifespan;
 	
-	public Particle(double angle, double velocity,Color color) {
+	public Particle(double angle, double velocity,double time) {
 		this.angle = angle;
 		this.velocity = velocity;
-		this.color=color;
-		this.time=0;
+		this.time=time;
 	}
-	public Particle(double angle, double velocity,Color color,double lifespan) {
+	public Particle(double angle, double velocity,double time,double lifespan) {
 		this.angle = angle;
 		this.velocity = velocity;
-		this.color=color;
-		this.time=0;
+		this.time=time;
 		this.setLifespan(lifespan);
-	}
-	public void setColor(Color c){
-		this.color=c;
-	}
-	public Color getColor(){
-		return color;
 	}
 	public double getX(double time){
 		return Math.cos(Math.toRadians(angle)) * velocity * time;
@@ -39,8 +30,8 @@ public class Particle {
 	public double getTime(){
 		return this.time;
 	}
-	public void tick(){
-		this.time+=.008;
+	public void setTime(double time){
+		this.time=time;
 	}
 	public double getLifespan() {
 		return lifespan;

@@ -13,51 +13,60 @@ import javax.swing.JComponent;
 
 public class GraphComponent extends JComponent {
 
-	//private LinkedList<Particle> particles;
-	private List<Particle> particles;
+	private LinkedList<Particle> particles;
 	private Random randomNumberGenerator;
-	private Iterator<Particle> iterator;
+	private double time;
+	private int size;
 
-	public GraphComponent(int numCurves) {
+	public GraphComponent() {
 		particles = new LinkedList<Particle>();
 		randomNumberGenerator = new Random();
-
-		for (int i = 0; i < 100; i++) {
-			particles.add(buildRandomParticle());
-		}
-
+		time = 0.0;
+		addParticles();
 	}
 
 	private Particle buildRandomParticle() {
-		return new Particle(45 + getRandomNumber(96),
-				40+ getRandomNumber(41), Color.WHITE, getRandomNumber());
+		return new Particle(45 + getRandomNumber(96), 60 + getRandomNumber(41),
+				time, getRandomNumber(6));
 	}
 
 	private int getRandomNumber(int range) {
 		return randomNumberGenerator.nextInt(range);
 	}
 
-	private double getRandomNumber() {
-		return randomNumberGenerator.nextDouble();
+	private Color getParticleColor(Particle p) {
+		double pTime = p.getTime();
+		if (time - pTime > p.getLifespan())
+			return Color.BLACK;
+		else if (time - pTime > 3)
+			return (Color.GRAY);
+		else if (time - pTime > 2)
+			return (Color.RED);
+		else if (time - pTime > .8)
+			return (Color.ORANGE);
+		else if (time - pTime > .4)
+			return (Color.YELLOW);
+		else
+			return Color.WHITE;
 	}
 
-	private void setParticleColor(Particle p) {
-		double time = p.getTime();
+	private int getParticleSize(Particle p) {
+		double pTime = p.getTime();
 
-		if (time > p.getLifespan())
-			particles.remove(p);
-		else if (time > .8)
-			p.setColor(Color.GRAY);
-		else if (time > .6)
-			p.setColor(Color.RED);
-		else if (time > .4)
-			p.setColor(Color.ORANGE);
-		else if (time > .18)
-			p.setColor(Color.YELLOW);
+		if (time - pTime > 3)
+			return 28;
+		else if (time - pTime > 2)
+			return 20;
+		else if (time - pTime > .8)
+			return 14;
+		else if (time - pTime > .4)
+			return 12;
+		else
+			return 10;
 	}
 
 	private void addParticles() {
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 150; i++) {
 			particles.add(buildRandomParticle());
 		}
 	}
@@ -77,40 +86,26 @@ public class GraphComponent extends JComponent {
 		g2.setComposite(AlphaComposite
 				.getInstance(AlphaComposite.SRC_OVER, .1f));
 
-		int size = 10;
+		time += .06;
 
-		iterator = particles.listIterator();
+		Iterator<Particle> iterator = particles.iterator();
 
-		/*
 		while (iterator.hasNext()) {
 			Particle prt = iterator.next();
-			prt.tick();
-			
-			setParticleColor(prt);
-			g.setColor(prt.getColor());
 
-			int x = (int) prt.getX(prt.getTime());
-			int y = (int) prt.getY(prt.getTime());
+			if (time - prt.getTime() > prt.getLifespan()) {
+				iterator.remove();
+			} else {
+				g.setColor(getParticleColor(prt));
+				size = (getParticleSize(prt));
 
-			g.fillOval(x - (size / 2), -(y + (size / 2)), size, size);
+				int x = (int) prt.getX(time - prt.getTime());
+				int y = (int) prt.getY(time - prt.getTime());
 
-			this.repaint();
-		}*/
+				g.fillOval(x - (size / 2), -(y - (size / 2)), size, size);
 
-		
-		 for (int i = 0; i < particles.size(); i++) {
-		 
-		 Particle prt = particles.get(i); prt.tick();
-		 
-		 setParticleColor(prt); g.setColor(prt.getColor());
-		 
-		 int x = (int) prt.getX(prt.getTime()); int y = (int)
-		 prt.getY(prt.getTime());
-		 
-		 g.fillOval(x - (size / 2), -(y + (size / 2)), size, size);
-		 
-		 this.repaint();
-		 
-		 }
+				this.repaint();
+			}
+		}
 	}
 }

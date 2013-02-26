@@ -14,7 +14,7 @@ public class Fire extends JFrame {
 
 		setLayout(new BorderLayout());
 
-		add(new GraphComponent(100), BorderLayout.CENTER);
+		add(new GraphComponent(), BorderLayout.CENTER);
 
 		setVisible(true);
 	}

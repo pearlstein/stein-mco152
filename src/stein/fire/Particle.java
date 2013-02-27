@@ -9,6 +9,8 @@ public class Particle {
 	private double velocity;
 	private double time;
 	private double lifespan;
+	private int startX;
+	private int startY;
 	
 	public Particle(double angle, double velocity,double time) {
 		this.angle = angle;
@@ -21,11 +23,31 @@ public class Particle {
 		this.time=time;
 		this.setLifespan(lifespan);
 	}
+	public Particle(double angle, double velocity,double time,double lifespan,int startX,int startY) {
+		this.angle = angle;
+		this.velocity = velocity;
+		this.time=time;
+		this.setLifespan(lifespan);
+		this.startX=startX;
+		this.startY=startY;
+	}
+	public int getStartX() {
+		return startX;
+	}
+	public void setStartX(int startX) {
+		this.startX = startX;
+	}
+	public int getStartY() {
+		return startY;
+	}
+	public void setStartY(int startY) {
+		this.startY = startY;
+	}
 	public double getX(double time){
-		return Math.cos(Math.toRadians(angle)) * velocity * time;
+		return Math.cos(Math.toRadians(angle)) * velocity * time+startX;
 	}
 	public double getY(double time){
-		return Math.sin(Math.toRadians(angle)) * velocity * time + (.5 * -9.8 * time * time);
+		return Math.sin(Math.toRadians(angle)) * velocity * time + (.5 * -9.8 * time * time)+startY;
 	}
 	public double getTime(){
 		return this.time;
@@ -44,5 +66,8 @@ public class Particle {
 	}
 	public double getVelocity() {
 		return velocity;
+	}
+	public void tick(){
+		this.time+=.06;
 	}
 }

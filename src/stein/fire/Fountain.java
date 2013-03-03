@@ -31,4 +31,8 @@ public class Fountain {
 	private int getRandomNumber(int range) {
 		return randomNumberGenerator.nextInt(range);
 	}
+	public void setParticle(Particle p){
+		p.setStartX(this.x);
+		p.setStartY(this.y);
+	}
 }

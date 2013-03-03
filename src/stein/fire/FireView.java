@@ -22,8 +22,6 @@ public class FireView extends JComponent {
 		
 		FireMouseListener listener=new FireMouseListener();
 		this.addMouseListener(listener);
-		
-		//addFountain(0,this.getHeight());
 	}
 
 	private Color getParticleColor(Particle p) {

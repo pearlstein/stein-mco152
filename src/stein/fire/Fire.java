@@ -11,6 +11,7 @@ public class Fire extends JFrame {
 	public Fire() {
 
 		setSize(1440,850);
+		//setSize(800,600);
 		setTitle("FIRE");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 

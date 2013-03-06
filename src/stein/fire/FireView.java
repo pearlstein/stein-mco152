@@ -17,14 +17,14 @@ public class FireView extends JComponent {
 	private ArrayList<Particle> particles;
 	private LinkedList<Fountain> fountains;
 	private ArrayList<Particle> pool;
-	private int pointer;
+	private int pointer=0;
 	private Iterator<Particle> iterator;
 
 	public FireView() {
 		particles = new ArrayList<Particle>();
 		fountains = new LinkedList<Fountain>();
 		pool = new ArrayList<Particle>();
-		pointer = 0;
+		
 
 		FireMouseListener listener = new FireMouseListener();
 		this.addMouseListener(listener);
@@ -95,7 +95,7 @@ public class FireView extends JComponent {
 	private void returnParticleToPool(Particle p) {
 		p.setStartX(-1);
 		p.setStartY(-1);
-		particles.remove(p);
+		iterator.remove();
 	}
 
 	private void addParticles(Fountain f) {
@@ -134,9 +134,9 @@ public class FireView extends JComponent {
 		g2.setComposite(AlphaComposite
 				.getInstance(AlphaComposite.SRC_OVER, .1f));
 
-		//iterator = particles.iterator();
-		for(int i=0;i<particles.size();i++) {
-			Particle prt = particles.get(i);
+		iterator = particles.iterator();
+		while(iterator.hasNext()){
+			Particle prt=iterator.next(); 
 			prt.tick();
 
 			if (prt.getTime() > prt.getLifespan()) {

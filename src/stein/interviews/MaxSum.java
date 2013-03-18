@@ -13,7 +13,7 @@ public class MaxSum {
 	}
 
 	public int getMaxSum() {
-		int max = 0;
+		int max =-128;
 		int startRow = -1;
 		int startCol = -1;
 		int maxWidth = -1;

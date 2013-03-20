@@ -12,6 +12,10 @@ public class Dictionary {
 		wordMap = new HashMap<String, String>();
 		importList(file);
 	}
+	
+	public HashMap<String, String> getWordMap(){
+		return wordMap;
+	}
 
 	private void importList(File file) throws IOException {
 

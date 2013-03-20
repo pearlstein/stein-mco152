@@ -26,6 +26,12 @@ public class Unscramble {
 		chooseTiles(7);
 		anagramList = new ArrayList<String>();
 	}
+	
+	public Unscramble(char[] tiles){
+		this.tiles=tiles;
+	}
+	
+	
 
 	private void chooseTiles(int numTiles) {
 		for (int i = 0; i < numTiles; i++) {
@@ -37,12 +43,12 @@ public class Unscramble {
 		HashMap<String, String> wordMap = new HashMap<String, String>();
 
 		ArrayList<String> words = getAnagrams(tiles);
-		//get permutations of all anagrams
+		// get permutations of all anagrams
 		for (int i = 0; i < words.size(); i++) {
 			for (int j = 0; j < words.get(i).length(); j++) {
 				String letters = words.get(i).substring(0, j + 1);
 				if (dictionary.contains(letters)) {
-						wordMap.put(letters, letters);
+					wordMap.put(letters, letters);
 				}
 			}
 		}
@@ -54,7 +60,7 @@ public class Unscramble {
 		for (int i = 0; i < tiles.length; i++) {
 			word += tiles[i];
 		}
-		return anagram(word,"");
+		return anagram(word, "");
 	}
 
 	private ArrayList<String> anagram(String s1, String s2) {
@@ -67,7 +73,7 @@ public class Unscramble {
 			}
 		return anagramList;
 	}
-	
+
 	public void setTiles(char[] tiles) {
 		this.tiles = tiles;
 	}
@@ -76,19 +82,4 @@ public class Unscramble {
 		return tiles;
 	}
 
-	public static void main(String[] args) throws IOException {
-		Unscramble u = new Unscramble();
-
-		ArrayList<String> theList=new ArrayList<String>();
-		u.setTiles(new char[] { 'a','b','c','d','e','f','g' });
-		HashMap<String, String> map = u.unscrambleTiles();
-
-		Iterator<String> iter = map.keySet().iterator();
-		while (iter.hasNext()) {
-			theList.add(iter.next().toString());
-		}
-		Collections.sort(theList);
-		System.out.println(theList.toString());
-
-	}
 }

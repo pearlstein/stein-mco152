@@ -1,6 +1,5 @@
 package stein.fire;
 
-import java.awt.Color;
 
 public class Particle {
 

@@ -1,8 +1,6 @@
 package stein.fire;
 
 import java.awt.BorderLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 
@@ -10,7 +8,7 @@ public class Fire extends JFrame {
 
 	public Fire() {
 
-		setSize(1440,850);
+		setSize(1200,850);
 		//setSize(800,600);
 		setTitle("FIRE");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

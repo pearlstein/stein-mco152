@@ -1,5 +1,7 @@
 package stein.ticTacToe;
 
+import java.util.ArrayList;
+
 public class BoardGame {
 	private Move[][] board;
 	private Move winner;
@@ -25,6 +27,18 @@ public class BoardGame {
 		}
 		possibleMoves=this.getNextMoves();
 		winner = orig.winner;
+	}
+	public ArrayList<Move> getBoardArrayList(){
+		ArrayList<Move> arrayListBoard=new ArrayList<Move>();
+		for(int row=0;row<3;row++){
+			for(int col=0;col<3;col++){
+				arrayListBoard.add(board[row][col]);
+			}
+		}
+		return arrayListBoard;
+	}
+	public Move[][] getBoard(){
+		return board;
 	}
 	public int[][] getPossibleMoves(){
 		return possibleMoves;

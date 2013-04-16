@@ -20,8 +20,6 @@ public class ChooseBestMove {
 		wordsSoFar=new ArrayList<String>();
 		u=new FormWordsWithTiles((tilesList));
 		possibleWords=u.getWordsThatCanBeFormedWithTiles();
-		
-
 	}
 	
 	public ArrayList<String> chooseOne() throws IOException{

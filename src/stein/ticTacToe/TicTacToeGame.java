@@ -6,16 +6,15 @@ import java.util.Stack;
 
 public class TicTacToeGame {
 	private Stack<BoardGame> boardStack;
-	private HashMap<ArrayList<Move>, BoardGame> uniqueEndingBoards;
-	private HashMap<ArrayList<Move>, BoardGame> uniqueBoardStates;
 	private Move player;
+	private HashMap<ArrayList<Move>, BoardGame> uniqueBoards;
+	private HashMap<ArrayList<Move>, BoardGame> uniqueBoardStates;
 
 	public TicTacToeGame() {
 		boardStack = new Stack<BoardGame>();
-		uniqueEndingBoards = new HashMap<ArrayList<Move>, BoardGame>();
-		uniqueBoardStates = new HashMap<ArrayList<Move>, BoardGame>();
 		player = Move.X;
-
+		uniqueBoards = new HashMap<ArrayList<Move>, BoardGame>();
+		uniqueBoardStates = new HashMap<ArrayList<Move>, BoardGame>();
 	}
 
 	private void pushNextBoards(BoardGame b) {
@@ -28,19 +27,19 @@ public class TicTacToeGame {
 		}
 	}
 
+
 	public void playGame() {
 		boardStack.push(new BoardGame());
 		while (!boardStack.isEmpty()) {
 			BoardGame topBoard = boardStack.pop();
-			if (!uniqueBoardStates.containsKey(topBoard.getBoardArrayList())) {
-				uniqueBoardStates.put(topBoard.getBoardArrayList(), topBoard);
-			}
+			uniqueBoardStates.put(topBoard.getBoardArrayList(), topBoard);
+
 			if (!topBoard.gameOver()) {
 				pushNextBoards(topBoard);
 			} else {
-				if (!uniqueEndingBoards.containsKey(topBoard.getBoardArrayList())) {
-					uniqueEndingBoards.put(topBoard.getBoardArrayList(), topBoard);
-				}
+
+				uniqueBoards.put(topBoard.getBoardArrayList(), topBoard);
+
 				if (topBoard.gameWon()) {
 					System.out.println(topBoard.getWinner()
 							+ " IS THE WINNER!!\n");
@@ -51,8 +50,9 @@ public class TicTacToeGame {
 				System.out.print("\n");
 			}
 		}
-		System.out.println("Number of unique ending boards: " + uniqueEndingBoards.size());
-		System.out.println("Number of unique board states: "+uniqueBoardStates.size());
+		System.out.println("Number of games " + uniqueBoards.size());
+		System.out.println("Number of unique game states: "
+				+ uniqueBoardStates.size());
 	}
 
 	private void changePlayer() {

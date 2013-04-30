@@ -6,6 +6,9 @@ public class BoardGame {
 	private Move[][] board;
 	private Move winner;
 	private int[][] possibleMoves;
+	private int[][] pastMoves;
+	private int numMoves;
+	private Move currentPlayer;
 
 	public BoardGame() {
 		board = new Move[3][3];
@@ -14,38 +17,76 @@ public class BoardGame {
 				board[row][col] = Move.EMPTY;
 			}
 		}
-		possibleMoves=this.getNextMoves();
+		possibleMoves = this.getNextMoves();
 		winner = Move.EMPTY;
+		pastMoves = new int[9][2];
+		numMoves = 0;
+		currentPlayer = Move.X;
 	}
 
-	public BoardGame(BoardGame orig){
-		board=new Move[3][3];
+	public BoardGame(BoardGame orig) {
+		board = new Move[3][3];
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
 				board[row][col] = orig.board[row][col];
 			}
 		}
-		possibleMoves=this.getNextMoves();
+		possibleMoves = this.getNextMoves();
 		winner = orig.winner;
+		pastMoves = orig.getPastMoves();
+		this.numMoves = orig.numMoves;
+		this.currentPlayer = orig.currentPlayer;
 	}
-	public ArrayList<Move> getBoardArrayList(){
-		ArrayList<Move> arrayListBoard=new ArrayList<Move>();
-		for(int row=0;row<3;row++){
-			for(int col=0;col<3;col++){
-				arrayListBoard.add(board[row][col]);
-			}
+
+	public Move getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(Move currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	public void changeCurrentPlayer() {
+
+		switch (this.currentPlayer) {
+		case X:
+			setCurrentPlayer(Move.O);
+			break;
+		case O:
+			setCurrentPlayer(Move.X);
+			break;
+		default:
+			break;
+
 		}
-		return arrayListBoard;
 	}
-	public Move[][] getBoard(){
+
+	public int[][] getPossibleMoves() {
+		return this.getNextMoves();
+	}
+
+	public Move[][] getBoard() {
 		return board;
 	}
-	public int[][] getPossibleMoves(){
-		return possibleMoves;
+
+	public ArrayList<Move> getBoardArrayList() {
+		ArrayList<Move> boardArrayList = new ArrayList<Move>();
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				boardArrayList.add(board[row][col]);
+			}
+		}
+		return boardArrayList;
 	}
+
 	public void mark(Move move, int row, int col) {
 		board[row][col] = move;
-		possibleMoves=getNextMoves();
+		possibleMoves = getNextMoves();
+		pastMoves[numMoves][0] = row;
+		pastMoves[numMoves][1] = col;
+		numMoves++;
+
+		changeCurrentPlayer();
 	}
 
 	public void markX(int row, int col) {
@@ -170,8 +211,6 @@ public class BoardGame {
 		}
 	}
 
-	//let's store each boards possible moves within the boardgame itself
-	//so it should set its own 
 	private int[][] getNextMoves() {
 		int[][] movesArray = new int[9][2];
 		int numMoves = 0;
@@ -191,7 +230,24 @@ public class BoardGame {
 		}
 		return packedMovesArray;
 	}
-	public Move getWinner(){
+
+	public Move getWinner() {
 		return winner;
 	}
+
+	public int[][] getPastMoves() {
+		int[][] deepCopyPastMoves = new int[9][2];
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 2; col++) {
+				deepCopyPastMoves[row][col] = pastMoves[row][col];
+			}
+		}
+		// return pastMoves;
+		return deepCopyPastMoves;
+	}
+
+	public int getNumMoves() {
+		return numMoves;
+	}
+
 }

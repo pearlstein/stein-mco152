@@ -1,7 +1,8 @@
 package stein.ticTacToe;
 
 import java.util.ArrayList;
-import queue.*;
+
+import stein.queue.*;
 
 public class GamePredictor {
 

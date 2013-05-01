@@ -1,4 +1,4 @@
-package queue;
+package stein.queue;
 
 public class Queue <T>{
   private final int MAX_QUEUE = 5000;

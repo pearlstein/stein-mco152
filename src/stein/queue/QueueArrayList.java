@@ -1,4 +1,4 @@
-package queue;
+package stein.queue;
 
 import java.util.ArrayList;
 

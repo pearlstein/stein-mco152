@@ -44,16 +44,16 @@ public class ChatGUI extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setName("Chat");
 
-		// initializeClient();
+		initializeClient();
 
-		initializeServer();
+		// initializeServer();
 
 		readerThread.start();
 
 	}
 
 	private void initializeClient() throws UnknownHostException, IOException {
-		socket = new Socket("192.168.117.195", 1025);
+		socket = new Socket("192.168.117.119", 8080);
 		readerThread = new Client(socket, this);
 	}
 
@@ -68,11 +68,7 @@ public class ChatGUI extends JFrame {
 	}
 
 	public void sendTheChat() throws IOException {
-		String s = compose.getText();
-		// String oldChats = chat.getText();
-		// chat.setText(oldChats + "\n" + s);
-		String oldChats = chat.getText();
-		chat.setText(oldChats + "\n" + s);
+		String s =  "Stein: "+compose.getText();
 		readerThread.send(s);
 		compose.setText("");
 

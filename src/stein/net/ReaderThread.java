@@ -5,17 +5,27 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ReaderThread extends Thread {
 
-	protected Socket socket;
-	protected ChatGUI gui;
-	protected String str;
-	protected OutputStream output;
-	protected InputStream in;
-	protected Scanner inputStreamReader;
-	protected ServerSocket server;
+	private ChatGUI gui;
+	private OutputStream output;
+	private InputStream in;
+	private MessageFormatter messageFormatter;
+	private final static Logger log = Logger.getLogger(MessageFormatter.class
+			.getName());
+
+	public ReaderThread(Socket socket, ChatGUI chat) throws IOException {
+		gui = chat;
+		output = socket.getOutputStream();
+		in = socket.getInputStream();
+		messageFormatter = new MessageFormatter();
+	}
 
 	public void send(String message) throws IOException {
 		output.write(message.getBytes());
@@ -26,11 +36,13 @@ public class ReaderThread extends Thread {
 	public void run() {
 
 		Scanner scanner = new Scanner(in);
-		while (true) {
-			if (scanner.hasNext()) {
-				gui.getChatMessage((scanner.nextLine()));
-			}
-
+		while (scanner.hasNext()) {
+			String msg = scanner.nextLine();
+			msg = messageFormatter.formatMessage(msg);
+			log.log(Level.INFO, msg);
+			System.out.println(msg);
+			gui.getChatMessage(msg);
+			log.log(Level.INFO, "after getChatMessage()");
 		}
 	}
 

@@ -52,7 +52,7 @@ public class WriterThread extends Thread {
 				out.write(msg.getBytes());
 				out.flush();
 			} catch (Exception e) {
-				addMessage("Someone has left");
+				//addMessage("Someone has left");
 				iterator.remove();
 			}
 		}

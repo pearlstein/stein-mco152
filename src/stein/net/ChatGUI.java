@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -27,12 +28,13 @@ public class ChatGUI extends JFrame implements WindowListener {
 	private JScrollPane scroll;
 	private ReaderThread readerThread;
 	private Socket socket;
+	private OutputStream out;
 	private String userName;
 
 	public ChatGUI() throws IOException {
 		super();
 		
-		userName=JOptionPane.showInputDialog("Enter your name: ");
+		userName=JOptionPane.showInputDialog("Please enter your name: ");
 		userName=userName.replace(' ','-');
 		
 		sendBtn = new JButton("Send");
@@ -59,23 +61,23 @@ public class ChatGUI extends JFrame implements WindowListener {
 		addWindowListener(this);
 
 	}
-
 	public void windowClosing(WindowEvent w){
 		try{
 		String s="LEAVE "+userName;
-		readerThread.send(s);
+		send(s);
 		}catch(IOException io){
 			io.printStackTrace();
 		}
 	}
 	
 	private void initializeClient() throws UnknownHostException, IOException {
-		socket = new Socket("192.168.117.105", 8080);
+		//socket = new Socket("192.168.1.3", 8080);
+		socket=new Socket("localhost",8080);
+		out=socket.getOutputStream();
 		readerThread = new ReaderThread(socket, this);
 		String s="JOIN "+userName;
-		readerThread.send(s);
+		send(s);
 	}
-
 	public void getChatMessage(String s) {
 		String oldChats = chat.getText();
 		chat.setText(oldChats + "\n" + s);
@@ -83,11 +85,14 @@ public class ChatGUI extends JFrame implements WindowListener {
 
 	public void sendTheChat() throws IOException {
 		String s =  "SAY "+userName+" "+compose.getText();
-		readerThread.send(s);
+		send(s);
 		compose.setText("");
-
 	}
-
+	private void send(String message) throws IOException {
+		out.write(message.getBytes());
+		out.write("\n".getBytes());
+		out.flush();
+	}
 	public static void main(String[] args) {
 		try {
 			new ChatGUI();

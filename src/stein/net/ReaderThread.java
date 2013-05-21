@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 public class ReaderThread extends Thread {
 
 	private ChatGUI gui;
-	private OutputStream output;
 	private InputStream in;
 	private MessageFormatter messageFormatter;
 	private final static Logger log = Logger.getLogger(MessageFormatter.class
@@ -22,16 +21,10 @@ public class ReaderThread extends Thread {
 
 	public ReaderThread(Socket socket, ChatGUI chat) throws IOException {
 		gui = chat;
-		output = socket.getOutputStream();
 		in = socket.getInputStream();
 		messageFormatter = new MessageFormatter();
 	}
 
-	public void send(String message) throws IOException {
-		output.write(message.getBytes());
-		output.write("\n".getBytes());
-		output.flush();
-	}
 
 	public void run() {
 

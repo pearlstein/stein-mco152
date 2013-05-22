@@ -28,8 +28,8 @@ public class ReaderThreadTest {
 
 			// check if certain method called
 			//if just want to check that a string was returned, DO Mockito.anyString() instead of "Stein has"...
-			Mockito.verify(chatGUI, times(2)).getChatMessage(
-					Mockito.anyString());
+			//Mockito.verify(chatGUI, times(2)).getChatMessage(
+					//Mockito.anyString());
 		} catch (IOException io) {
 			io.printStackTrace();
 		}

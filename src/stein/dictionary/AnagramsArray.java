@@ -1,10 +1,6 @@
 package stein.dictionary;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class AnagramsArray {
 	private char[] listOne;

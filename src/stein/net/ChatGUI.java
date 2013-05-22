@@ -1,6 +1,7 @@
 package stein.net;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -30,69 +31,90 @@ public class ChatGUI extends JFrame implements WindowListener {
 	private Socket socket;
 	private OutputStream out;
 	private String userName;
+	private ConversationPanel conversationPanel;
+	private JPanel chatPanel;
 
 	public ChatGUI() throws IOException {
 		super();
-		
-		userName=JOptionPane.showInputDialog("Please enter your name: ");
-		userName=userName.replace(' ','-');
-		
+
+		userName = JOptionPane.showInputDialog("Please enter your name: ");
+
 		sendBtn = new JButton("Send");
 		compose = new JTextField();
 		compose.addKeyListener(new EnterListener());
 		chat = new JTextArea();
 		scroll = new JScrollPane(chat);
 		chat.setEditable(false);
-		setLayout(new BorderLayout());
+		setLayout(new GridLayout());
 
-		add(scroll, BorderLayout.CENTER);
-		add(new ComposePanel(sendBtn, compose), BorderLayout.SOUTH);
-		sendBtn.addActionListener(new ClickListener());
 		
-		setSize(300, 200);
+		buildChatPanel();
+		add(chatPanel);
+				
+		conversationPanel = new ConversationPanel();
+		add(conversationPanel);
+		sendBtn.addActionListener(new ClickListener());
+
+		setSize(400, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setName("Chat");
+		setName("Chat GUI");
 
 		initializeClient();
 
 		readerThread.start();
 		setVisible(true);
-		
+
 		addWindowListener(this);
 
 	}
-	public void windowClosing(WindowEvent w){
-		try{
-		String s="LEAVE "+userName;
-		send(s);
-		}catch(IOException io){
+	private void buildChatPanel(){
+		chatPanel=new JPanel();
+		chatPanel.setLayout(new BorderLayout());
+		chatPanel.add(scroll,BorderLayout.CENTER);
+		chatPanel.add(new ComposePanel(sendBtn, compose), BorderLayout.SOUTH);
+	}
+
+	public void windowClosing(WindowEvent w) {
+		try {
+			String s = "LEAVE " + userName;
+			send(s);
+		} catch (IOException io) {
 			io.printStackTrace();
 		}
 	}
-	
+
 	private void initializeClient() throws UnknownHostException, IOException {
-		//socket = new Socket("192.168.1.3", 8080);
-		socket=new Socket("localhost",8080);
-		out=socket.getOutputStream();
+		socket = new Socket("192.168.117.126", 8080);
+		//socket = new Socket("localhost", 8080);
+		out = socket.getOutputStream();
 		readerThread = new ReaderThread(socket, this);
-		String s="JOIN "+userName;
+		String s = "JOIN " + userName;
 		send(s);
 	}
-	public void getChatMessage(String s) {
+
+	public void modifyChatMessage(String s) {
 		String oldChats = chat.getText();
 		chat.setText(oldChats + "\n" + s);
 	}
 
 	public void sendTheChat() throws IOException {
-		String s =  "SAY "+userName+" "+compose.getText();
+		String s = "SAY " + userName + " " + compose.getText();
 		send(s);
 		compose.setText("");
+	}
+
+	public void sendAnnounceMessage() throws IOException{
+		out.write("ANNOUNCE ".getBytes());
+		out.write(userName.getBytes());
+		out.write("\n".getBytes());
+		out.flush();
 	}
 	private void send(String message) throws IOException {
 		out.write(message.getBytes());
 		out.write("\n".getBytes());
 		out.flush();
 	}
+
 	public static void main(String[] args) {
 		try {
 			new ChatGUI();
@@ -104,6 +126,7 @@ public class ChatGUI extends JFrame implements WindowListener {
 	private class ComposePanel extends JPanel {
 		public ComposePanel(JButton send, JTextField compose) {
 			setLayout(new BorderLayout());
+			setSize(300,400);
 			add(compose, BorderLayout.CENTER);
 			add(send, BorderLayout.EAST);
 		}
@@ -150,7 +173,7 @@ public class ChatGUI extends JFrame implements WindowListener {
 	}
 
 	@Override
-	public void windowActivated(WindowEvent arg0) {		
+	public void windowActivated(WindowEvent arg0) {
 	}
 
 	@Override
@@ -162,7 +185,7 @@ public class ChatGUI extends JFrame implements WindowListener {
 	}
 
 	@Override
-	public void windowDeiconified(WindowEvent arg0) {	
+	public void windowDeiconified(WindowEvent arg0) {
 	}
 
 	@Override
@@ -171,6 +194,9 @@ public class ChatGUI extends JFrame implements WindowListener {
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {
+	}
+	public ConversationPanel getConversationPanel(){
+		return this.conversationPanel;
 	}
 
 }
